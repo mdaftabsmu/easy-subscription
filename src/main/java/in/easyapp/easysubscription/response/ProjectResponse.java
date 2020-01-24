@@ -6,77 +6,87 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import in.easyapp.easysubscription.models.ProjectRequestMdl;
+
 public class ProjectResponse {
-    private String appId;
-    private String appName = "TestApp-Name";
-    private String description ="....";
-    private String createdBy = " ";
-    private  boolean isActive = true;
-    private List<ServiceSubscriptionResponse> services;
-    private long createdAt = Date.from(Instant.now()).getTime();
+	private String appId;
+	private String appName;
+	private String description;
+	private String createdBy;
+	private  boolean isActive = true;
+	private List<ServiceSubscriptionResponse> services;
+	private long createdAt = Date.from(Instant.now()).getTime();
 
-    public ProjectResponse(){
-        this.appId = "appId_1";
-    }
+	public ProjectResponse(){
+		this.appId = "appId_1";
+	}
 
-    public List<ServiceSubscriptionResponse> getServices() {
-        return services;
-    }
+	public List<ServiceSubscriptionResponse> getServices() {
+		return services;
+	}
 
-    public void setServices(List<ServiceSubscriptionResponse> services) {
-        this.services = services;
-    }
+	public void setServices(List<ServiceSubscriptionResponse> services) {
+		this.services = services;
+	}
 
-    public ProjectResponse(int count){
-        this.appId = "appId_"+count;
-    }
+	public ProjectResponse(int count){
+		this.appId = "appId_"+count;
+	}
 
-    public String getAppId() {
-        return appId;
-    }
+	public ProjectResponse(ProjectRequestMdl mdl) {
+		this.appId = mdl.getAppId();
+		this.appName = mdl.getAppName();
+		this.description= mdl.getDescription();
+		this.createdBy = mdl.getCreatedBy();
+		this.isActive = mdl.getActive();
+	}
 
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public String getAppName() {
-        return appName;
-    }
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
-    public void setAppName(String appName) {
-        this.appName = appName;
-    }
+	public String getAppName() {
+		return appName;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setAppName(String appName) {
+		this.appName = appName;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
+	public String getCreatedBy() {
+		return createdBy;
+	}
 
-    public boolean isActive() {
-        return isActive;
-    }
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
 
-    public void setActive(boolean active) {
-        isActive = active;
-    }
+	public boolean isActive() {
+		return isActive;
+	}
 
-    public long getCreatedAt() {
-        return createdAt;
-    }
+	public void setActive(boolean active) {
+		isActive = active;
+	}
 
-    public void setCreatedAt(long createdAt) {
-        this.createdAt = createdAt;
-    }
+	public long getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(long createdAt) {
+		this.createdAt = createdAt;
+	}
 }
 

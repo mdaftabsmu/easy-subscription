@@ -12,6 +12,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import in.easyapp.easysubscription.request.ProjectRequest;
+
 @Document(collation= "project")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -44,6 +46,24 @@ public class ProjectRequestMdl {
 		this.isActive = isActive;
 		this.services = services;
 		this.createdAt = createdAt;
+	}
+	public ProjectRequestMdl(ProjectRequest mdl,List<ServiceSubscriptionRequestMdl> services) {
+		this.appId = mdl.getAppId();
+		this.appName = mdl.getAppName();
+		this.description= mdl.getDescription();
+		this.createdBy = mdl.getCreatedBy();
+		this.isActive = true;
+		this.services = services;
+		this.createdAt = Date.from(Instant.now()).getTime();
+	}
+
+	public ProjectRequestMdl(ProjectRequest mdl) {
+		this.appId = mdl.getAppId();
+		this.appName = mdl.getAppName();
+		this.description= mdl.getDescription();
+		this.createdBy = mdl.getCreatedBy();
+		this.isActive = true;
+		this.createdAt = Date.from(Instant.now()).getTime();
 	}
 
 	public String getId() {
@@ -101,7 +121,7 @@ public class ProjectRequestMdl {
 		this.createdBy = createdBy;
 	}
 
-	public boolean isActive() {
+	public boolean getActive() {
 		return isActive;
 	}
 

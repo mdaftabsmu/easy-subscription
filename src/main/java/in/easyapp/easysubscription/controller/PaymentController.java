@@ -1,5 +1,7 @@
 package in.easyapp.easysubscription.controller;
 
+import java.security.Principal;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +16,7 @@ public class PaymentController {
     }
 
     @RequestMapping(value = "/orders", method = RequestMethod.POST)
-    public ResponseEntity<String> createPaymentOrder(SubscnOrderRequest order){
+    public ResponseEntity<String> createPaymentOrder(Principal principal,SubscnOrderRequest order){
         return ResponseEntity.status(201).body("{\"id\":\"order_id_XYZ\"}");
     }
 
@@ -30,7 +32,7 @@ public class PaymentController {
     }
 
     @RequestMapping(value = "/toggleConfirmation", method = RequestMethod.GET)
-    public ResponseEntity<String> toggle(){
+    public ResponseEntity<String> toggle(Principal principal){
         toggleOK();
         String state = "";
         state += ok;

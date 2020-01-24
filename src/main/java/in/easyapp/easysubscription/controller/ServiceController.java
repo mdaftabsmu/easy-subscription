@@ -6,6 +6,7 @@ import in.easyapp.easysubscription.exception.AppServiceException;
 import in.easyapp.easysubscription.response.ServiceResponse;
 import in.easyapp.easysubscription.response.SubscriptionPlanResponse;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class ServiceController {
 
 
     @RequestMapping(value = "/services", method = RequestMethod.GET)
-    public List<ServiceResponse> getServices(@RequestParam(value = "appId", required = false) String appId) {
+    public List<ServiceResponse> getServices(Principal principal,@RequestParam(value = "appId", required = false) String appId) {
         List<ServiceResponse> srvList = new ArrayList<>();
         ServiceResponse mdl_1 = new ServiceResponse("Service_1");
         mdl_1.setDescription("This is dummy service 1");
@@ -53,7 +54,7 @@ public class ServiceController {
     }
 
     @RequestMapping(value = "/services/{serviceId}", method = RequestMethod.GET)
-    public ServiceResponse getServiceById(@PathVariable("serviceId") String serviceId) {
+    public ServiceResponse getServiceById(Principal principal,@PathVariable("serviceId") String serviceId) {
         String[] plElem = { "GOLD", "SILVER", "DEDICATED" };
         if(serviceId.equals("Service_1")){
             ServiceResponse mdl_1 = new ServiceResponse("Service_1");

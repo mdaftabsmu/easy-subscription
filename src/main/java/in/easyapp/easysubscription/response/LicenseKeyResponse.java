@@ -1,10 +1,17 @@
 package in.easyapp.easysubscription.response;
 
-public class LicenseKeyResponse {
-	private String licenseKey = "iuefifoesfj21epoj.fhaiwf9-28j.fuuihjbb7347yoihfygybki";
-    private String userId = "testUserId";
+import in.easyapp.easysubscription.models.LicenseMdl;
 
-    public String getUserId() {
+public class LicenseKeyResponse {
+	private String licenseKey;
+    private String userId;
+
+    public LicenseKeyResponse(LicenseMdl mdl) {
+		this.licenseKey = mdl.getLicenseKey();
+		this.userId = mdl.getUserId();
+	}
+
+	public String getUserId() {
         return userId;
     }
 

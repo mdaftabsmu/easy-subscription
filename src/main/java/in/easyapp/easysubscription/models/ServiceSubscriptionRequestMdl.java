@@ -10,6 +10,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import in.easyapp.easysubscription.request.ServiceSubscriptionRequest;
+
 @Document(collation= "serviceSubscription")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -47,6 +49,10 @@ public class ServiceSubscriptionRequestMdl {
 	}
 	
 	
+
+	public ServiceSubscriptionRequestMdl(ServiceSubscriptionRequest req) {
+		// TODO Auto-generated constructor stub
+	}
 
 	public String getId() {
 		return id;

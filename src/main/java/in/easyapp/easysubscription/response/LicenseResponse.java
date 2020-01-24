@@ -1,11 +1,25 @@
 package in.easyapp.easysubscription.response;
 
-public class LicenseResponse {
-    private String appId = "appId_1";
-    private String serviceId = "serviceId_1";
-    private String status = "SUCCESS";
+import in.easyapp.easysubscription.models.LicenseMdl;
 
-    public String getServiceId() {
+public class LicenseResponse {
+    private String appId;
+    private String serviceId;
+    private String status;
+
+    public LicenseResponse(LicenseMdl mdl) {
+		this.appId = mdl.getAppId();
+		this.serviceId = mdl.getServiceId();
+		this.status = "SUCCESS";
+	}
+
+	public LicenseResponse(String appId, String serviceId, String valid) {
+		this.appId = appId;
+		this.serviceId = serviceId;
+		this.status =valid;
+	}
+
+	public String getServiceId() {
         return serviceId;
     }
 
