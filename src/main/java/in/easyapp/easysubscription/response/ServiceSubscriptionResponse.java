@@ -1,16 +1,39 @@
 package in.easyapp.easysubscription.response;
 
-import java.time.Instant;
-import java.util.Date;
+import in.easyapp.easysubscription.models.ServiceSubscriptionMdl;
 
 public class ServiceSubscriptionResponse {
 
-	private String serviceId = "TestService";
-	private String appId = "appId_1";
-	private String subscriptionPlan = "free";
-	private String subscriptionKey = "agfkjuyoi.33178ghkjf.asd";
-	private long expiresOn = Date.from(Instant.now()).getTime() + 7776000;
-	private long createdAt = Date.from(Instant.now()).getTime();
+	private String serviceId ;
+	private String appId ;
+	private String subscriptionPlan ;
+	private String subscriptionKey ;
+	private long expiresOn;
+	private long createdAt;
+	
+	public ServiceSubscriptionResponse() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public ServiceSubscriptionResponse(String serviceId, String appId, String subscriptionPlan, String subscriptionKey,
+			long expiresOn, long createdAt) {
+		super();
+		this.serviceId = serviceId;
+		this.appId = appId;
+		this.subscriptionPlan = subscriptionPlan;
+		this.subscriptionKey = subscriptionKey;
+		this.expiresOn = expiresOn;
+		this.createdAt = createdAt;
+	}
+
+	public ServiceSubscriptionResponse(ServiceSubscriptionMdl mdl) {
+		this.serviceId = mdl.getServiceId();
+		this.appId = mdl.getAppId();
+		this.subscriptionPlan = mdl.getSubscriptionPlan();
+		this.subscriptionKey = mdl.getSubscriptionKey();
+		this.expiresOn = mdl.getExpiresOn();
+		this.createdAt = mdl.getCreatedAt();
+	}
 
 	public String getServiceId() {
 		return serviceId;

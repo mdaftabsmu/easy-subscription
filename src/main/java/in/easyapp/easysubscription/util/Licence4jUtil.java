@@ -26,6 +26,8 @@ public class Licence4jUtil {
 	}
 
 	public static License validate(String publicKey,String licenseStringToValidate,String serviceId) {
+		
+		
 		return LicenseValidator.validate(
 				licenseStringToValidate, // REQUIRED - license string
 				publicKey, // REQUIRED - public key
@@ -35,10 +37,13 @@ public class Licence4jUtil {
 				null, // current date, null for current date
 				null);
 	}
+	
+	
 
 
 	public static void main(String[] args) {
-			new Licence4jUtil().generateLicence("1571158624658934459511571158529822");
+			String generateLicence = new Licence4jUtil().generateLicence("1579972601640624559011579972662820");
+			System.out.println(generateLicence);
 	}
 
 }

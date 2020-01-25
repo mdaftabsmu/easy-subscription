@@ -77,6 +77,7 @@ public class LicensingServiceImpl implements LicensingService{
 		if(appId == null || serviceId == null) {
 			throw new RequestException("Invalid AppId and ServiceId");
 		}
+		
 		return null;
 	}
 

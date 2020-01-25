@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import in.easyapp.easysubscription.exception.DataNotFoundException;
+import in.easyapp.easysubscription.exception.LicenceException;
 import in.easyapp.easysubscription.exception.RequestException;
 import in.easyapp.easysubscription.request.ProjectRequest;
 import in.easyapp.easysubscription.request.ServiceSubscriptionRequest;
@@ -76,7 +78,7 @@ public class AppController {
     	
     	try {
 			return appService.subscribeServiceForAppId(appId,serviceId,subcn);
-		} catch (RequestException e) {
+		} catch (RequestException | LicenceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -94,7 +96,16 @@ public class AppController {
         }
         return subscriptions;*/
     	
-    	return appService.getServiceForAppId(appId);
+    	try {
+			return appService.getServiceForAppId(appId);
+		} catch (RequestException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DataNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return null;
     }
 
     @RequestMapping(value = "/apps/{appId}/services/{serviceId}/subscription", method = RequestMethod.PUT)

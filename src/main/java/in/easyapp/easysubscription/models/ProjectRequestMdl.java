@@ -31,12 +31,12 @@ public class ProjectRequestMdl {
 	@Field("isActive")
 	private  boolean isActive = true;
 	@Field("services")
-	private List<ServiceSubscriptionRequestMdl> services;
+	private List<ServiceSubscriptionMdl> services;
 	@Field("createdAt")
 	private long createdAt = Date.from(Instant.now()).getTime();
 
 	public ProjectRequestMdl(String id, String appId, String appName, String description, String createdBy,
-			boolean isActive, List<ServiceSubscriptionRequestMdl> services, long createdAt) {
+			boolean isActive, List<ServiceSubscriptionMdl> services, long createdAt) {
 		super();
 		this.id = id;
 		this.appId = appId;
@@ -47,7 +47,7 @@ public class ProjectRequestMdl {
 		this.services = services;
 		this.createdAt = createdAt;
 	}
-	public ProjectRequestMdl(ProjectRequest mdl,List<ServiceSubscriptionRequestMdl> services) {
+	public ProjectRequestMdl(ProjectRequest mdl,List<ServiceSubscriptionMdl> services) {
 		this.appId = mdl.getAppId();
 		this.appName = mdl.getAppName();
 		this.description= mdl.getDescription();
@@ -77,11 +77,11 @@ public class ProjectRequestMdl {
 	public ProjectRequestMdl(){
 	}
 
-	public List<ServiceSubscriptionRequestMdl> getServices() {
+	public List<ServiceSubscriptionMdl> getServices() {
 		return services;
 	}
 
-	public void setServices(List<ServiceSubscriptionRequestMdl> services) {
+	public void setServices(List<ServiceSubscriptionMdl> services) {
 		this.services = services;
 	}
 

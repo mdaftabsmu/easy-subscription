@@ -1,8 +1,5 @@
 package in.easyapp.easysubscription.models;
 
-import java.time.Instant;
-import java.util.Date;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -15,7 +12,7 @@ import in.easyapp.easysubscription.request.ServiceSubscriptionRequest;
 @Document(collation= "serviceSubscription")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ServiceSubscriptionRequestMdl {
+public class ServiceSubscriptionMdl {
 
 	@Id
 	private String id;
@@ -28,30 +25,34 @@ public class ServiceSubscriptionRequestMdl {
 	@Field("subscriptionKey")
 	private String subscriptionKey;
 	@Field("expiresOn")
-	private long expiresOn = Date.from(Instant.now()).getTime() + 7776000;
+	private long expiresOn;
 	@Field("createdAt")
-	private long createdAt = Date.from(Instant.now()).getTime();
+	private long createdAt;
+	@Field("licenseKey")
+	private String licenseKey;
 	
-	public ServiceSubscriptionRequestMdl() {
+	
+	public ServiceSubscriptionMdl() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ServiceSubscriptionRequestMdl(String id, String serviceId, String appId, String subscriptionPlan,
-			String subscriptionKey, long expiresOn, long createdAt) {
-		super();
-		this.id = id;
-		this.serviceId = serviceId;
-		this.appId = appId;
-		this.subscriptionPlan = subscriptionPlan;
-		this.subscriptionKey = subscriptionKey;
-		this.expiresOn = expiresOn;
-		this.createdAt = createdAt;
+	public ServiceSubscriptionMdl(ServiceSubscriptionRequest req,String licenseKey) {
+		this.serviceId = req.getServiceId();
+		this.appId = req.getAppId();
+		this.subscriptionPlan = req.getSubscriptionPlan();
+		this.subscriptionKey = req.getSubscriptionKey();
+		this.expiresOn = req.getExpiresOn();
+		this.createdAt = req.getCreatedAt();
+		this.licenseKey = licenseKey;
 	}
-	
-	
 
-	public ServiceSubscriptionRequestMdl(ServiceSubscriptionRequest req) {
-		// TODO Auto-generated constructor stub
+	public ServiceSubscriptionMdl(ServiceSubscriptionRequest req) {
+		this.serviceId = req.getServiceId();
+		this.appId = req.getAppId();
+		this.subscriptionPlan = req.getSubscriptionPlan();
+		this.subscriptionKey = req.getSubscriptionKey();
+		this.expiresOn = req.getExpiresOn();
+		this.createdAt = req.getCreatedAt();
 	}
 
 	public String getId() {
@@ -108,6 +109,15 @@ public class ServiceSubscriptionRequestMdl {
 
 	public void setCreatedAt(long createdAt) {
 		this.createdAt = createdAt;
+	}
+	
+
+	public String getLicenseKey() {
+		return licenseKey;
+	}
+
+	public void setLicenseKey(String licenseKey) {
+		this.licenseKey = licenseKey;
 	}
 
 	@Override
