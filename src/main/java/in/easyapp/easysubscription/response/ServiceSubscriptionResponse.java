@@ -2,7 +2,7 @@ package in.easyapp.easysubscription.response;
 
 import in.easyapp.easysubscription.models.ServiceSubscriptionMdl;
 
-public class ServiceSubscriptionResponse {
+public class ServiceSubscriptionResponse implements EasyResponse {
 
 	private String serviceId ;
 	private String appId ;

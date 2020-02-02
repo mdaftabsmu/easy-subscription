@@ -1,5 +1,7 @@
 package in.easyapp.easysubscription.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import in.easyapp.easysubscription.exception.AppServiceException;
@@ -14,7 +16,8 @@ import java.util.List;
 @RestController
 public class ServiceController {
 
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceController.class);
+			
     @RequestMapping(value = "/services", method = RequestMethod.GET)
     public List<ServiceResponse> getServices(Principal principal,@RequestParam(value = "appId", required = false) String appId) {
         List<ServiceResponse> srvList = new ArrayList<>();

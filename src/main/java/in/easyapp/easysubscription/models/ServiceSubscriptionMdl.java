@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import in.easyapp.easysubscription.request.ServiceSubscriptionRequest;
 
-@Document(collation= "serviceSubscription")
+@Document(collection= "ServiceSubscriptionMdl")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceSubscriptionMdl {
@@ -30,7 +30,8 @@ public class ServiceSubscriptionMdl {
 	private long createdAt;
 	@Field("licenseKey")
 	private String licenseKey;
-	
+	@Field("isActive")
+	private boolean isActive;
 	
 	public ServiceSubscriptionMdl() {
 		// TODO Auto-generated constructor stub
@@ -53,6 +54,17 @@ public class ServiceSubscriptionMdl {
 		this.subscriptionKey = req.getSubscriptionKey();
 		this.expiresOn = req.getExpiresOn();
 		this.createdAt = req.getCreatedAt();
+		this.isActive = true;
+	}
+	
+	public ServiceSubscriptionMdl(ServiceSubscriptionRequest req,long expiresOn) {
+		this.serviceId = req.getServiceId();
+		this.appId = req.getAppId();
+		this.subscriptionPlan = req.getSubscriptionPlan();
+		this.subscriptionKey = req.getSubscriptionKey();
+		this.expiresOn = req.getExpiresOn();
+		this.createdAt = expiresOn;
+		this.isActive = true;
 	}
 
 	public String getId() {
@@ -118,6 +130,14 @@ public class ServiceSubscriptionMdl {
 
 	public void setLicenseKey(String licenseKey) {
 		this.licenseKey = licenseKey;
+	}
+
+	public boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	@Override

@@ -5,13 +5,13 @@ import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import in.easyapp.easysubscription.models.ProjectRequestMdl;
+import in.easyapp.easysubscription.models.ProjectMdl;
 
 @Repository
-public interface AppRepository extends MongoRepository<ProjectRequestMdl, String> {
+public interface AppRepository extends MongoRepository<ProjectMdl, String> {
 	
-	List<ProjectRequestMdl> findAllByCreatedBy(String createdBy);
+	List<ProjectMdl> findAllByCreatedBy(String createdBy);
 
-	ProjectRequestMdl findByAppId(String appId);
+	ProjectMdl findByAppId(String appId);
 
 }

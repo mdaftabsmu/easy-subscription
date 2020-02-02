@@ -1,10 +1,10 @@
 package in.easyapp.easysubscription.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.license4j.License;
@@ -12,7 +12,7 @@ import com.license4j.License;
 import in.easyapp.easysubscription.exception.DataNotFoundException;
 import in.easyapp.easysubscription.exception.LicenceException;
 import in.easyapp.easysubscription.exception.RequestException;
-import in.easyapp.easysubscription.models.ProjectRequestMdl;
+import in.easyapp.easysubscription.models.ProjectMdl;
 import in.easyapp.easysubscription.models.ServiceSubscriptionMdl;
 import in.easyapp.easysubscription.repository.AppRepository;
 import in.easyapp.easysubscription.repository.ServiceSubRepository;
@@ -32,6 +32,9 @@ public class AppServiceImpl implements AppService {
 	
 	@Autowired
 	private ServiceSubRepository serviceSubRepository;
+	
+	@Autowired
+	private CommonBean commonBean;
 
 	@Override
 	public ProjectResponse createApp(ProjectRequest app) throws RequestException {
@@ -42,27 +45,32 @@ public class AppServiceImpl implements AppService {
 		for(ServiceSubscriptionRequest req : app.getServices()) {
 			services.add(new ServiceSubscriptionMdl(req));
 		}
-		ProjectRequestMdl mdl = appRepository.save(new ProjectRequestMdl(app));
+		ProjectMdl mdl = appRepository.insert(new ProjectMdl(app,services));
 		return new ProjectResponse(mdl);
 	}
 
 	@Override
 	public List<ProjectResponse> getApps(String createdBy) throws RequestException {
+		try {
 		if(createdBy == null || createdBy.isEmpty()) {
-			List<ProjectRequestMdl> list = appRepository.findAll();
+			List<ProjectMdl> list = appRepository.findAll();
 			return convertMdlToResp(list);
 		}
-		List<ProjectRequestMdl> list = appRepository.findAllByCreatedBy(createdBy);
+		List<ProjectMdl> list = appRepository.findAllByCreatedBy(createdBy);
 		return  convertMdlToResp(list);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		throw new RequestException();
 		
 	}
 
-	private List<ProjectResponse> convertMdlToResp(List<ProjectRequestMdl> list) throws RequestException {
-		if(list==null ||!list.isEmpty()) {
+	private List<ProjectResponse> convertMdlToResp(List<ProjectMdl> list) throws RequestException {
+		if(list==null ||list.isEmpty()) {
 			throw new RequestException("App details not found");
 		}
 		List<ProjectResponse> resps = new ArrayList<ProjectResponse>();
-		for(ProjectRequestMdl mdl : list) {
+		for(ProjectMdl mdl : list) {
 			resps.add(new ProjectResponse(mdl));
 		}
 		return resps;
@@ -73,7 +81,7 @@ public class AppServiceImpl implements AppService {
 		if(appId == null || appId.isEmpty()) {
 			throw new RequestException("Invalid App ids");
 		}
-		ProjectRequestMdl mdl  = appRepository.findByAppId(appId);
+		ProjectMdl mdl  = appRepository.findByAppId(appId);
 		if(mdl == null) {
 			throw new RequestException("Project not found by this id : "+appId);
 		}
@@ -90,9 +98,9 @@ public class AppServiceImpl implements AppService {
 			throw new RequestException("Invalid request");
 		}
 		
-		License validate = Licence4jUtil.validate(PUBLIC_KEY, subcn.getSubscriptionPlan(), subcn.getServiceId());
+		License validate = Licence4jUtil.validate(commonBean.getPublicKey(), subcn.getSubscriptionPlan(), subcn.getServiceId());
 		
-		if(validate == null || validate.getActivationStatus().equals(IN_VALID)) {
+		if(validate == null || validate.getValidationStatus().equals(IN_VALID)) {
 			throw new LicenceException("Invalid License details");
 		}
 		ServiceSubscriptionMdl mdl = serviceSubRepository.save(new ServiceSubscriptionMdl(subcn,validate.getLicenseKey().getTheKey()));
@@ -116,9 +124,35 @@ public class AppServiceImpl implements AppService {
 	}
 
 	@Override
-	public LicenseResponse updateServiceLicense(String appId, String serviceId, ServiceSubscriptionRequest subcn) {
-		// TODO Auto-generated method stub
-		return null;
+	public LicenseResponse updateServiceLicense(String appId, String serviceId, ServiceSubscriptionRequest subcn) throws RequestException {
+		if(appId == null || appId.isEmpty()||serviceId == null || serviceId.isEmpty()|| subcn ==null) {
+			throw new RequestException("Invalid request");
+		}
+		ProjectMdl appMdl = appRepository.findByAppId(appId);
+		if(appMdl == null || appMdl.getServices() == null) {
+			throw new RequestException("App Id not found in db");
+		}
+		boolean flag  =  false;
+		for(ServiceSubscriptionMdl service : appMdl.getServices()){
+			if(service.getServiceId().equals(serviceId)) {
+				if(service.getExpiresOn()<new Date().getTime() && !service.getIsActive()) {
+					serviceSubRepository.save(new ServiceSubscriptionMdl(subcn));
+				}else {
+					serviceSubRepository.save(new ServiceSubscriptionMdl(subcn,service.getExpiresOn()));
+				}
+				flag = true;
+				break;
+			}
+		}
+		LicenseResponse res  = new LicenseResponse();
+		res.setAppId(appId);
+		res.setServiceId(serviceId);
+		if(flag) {
+			res.setStatus("SUCCESS");
+		}else {
+			res.setStatus("UN-SUCCESS");
+		}
+		return res;
 	}
 
 }

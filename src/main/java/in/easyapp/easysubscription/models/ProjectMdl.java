@@ -1,11 +1,12 @@
 package in.easyapp.easysubscription.models;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -14,10 +15,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import in.easyapp.easysubscription.request.ProjectRequest;
 
-@Document(collation= "project")
+@Document(collection= "projectMdl")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProjectRequestMdl {
+public class ProjectMdl {
 	@Id
 	private String id;
 	@Field("appId")
@@ -35,7 +36,7 @@ public class ProjectRequestMdl {
 	@Field("createdAt")
 	private long createdAt = Date.from(Instant.now()).getTime();
 
-	public ProjectRequestMdl(String id, String appId, String appName, String description, String createdBy,
+	public ProjectMdl(String id, String appId, String appName, String description, String createdBy,
 			boolean isActive, List<ServiceSubscriptionMdl> services, long createdAt) {
 		super();
 		this.id = id;
@@ -47,7 +48,7 @@ public class ProjectRequestMdl {
 		this.services = services;
 		this.createdAt = createdAt;
 	}
-	public ProjectRequestMdl(ProjectRequest mdl,List<ServiceSubscriptionMdl> services) {
+	public ProjectMdl(ProjectRequest mdl,List<ServiceSubscriptionMdl> services) {
 		this.appId = mdl.getAppId();
 		this.appName = mdl.getAppName();
 		this.description= mdl.getDescription();
@@ -57,7 +58,7 @@ public class ProjectRequestMdl {
 		this.createdAt = Date.from(Instant.now()).getTime();
 	}
 
-	public ProjectRequestMdl(ProjectRequest mdl) {
+	public ProjectMdl(ProjectRequest mdl) {
 		this.appId = mdl.getAppId();
 		this.appName = mdl.getAppName();
 		this.description= mdl.getDescription();
@@ -74,7 +75,7 @@ public class ProjectRequestMdl {
 		this.id = id;
 	}
 
-	public ProjectRequestMdl(){
+	public ProjectMdl(){
 	}
 
 	public List<ServiceSubscriptionMdl> getServices() {
@@ -85,7 +86,7 @@ public class ProjectRequestMdl {
 		this.services = services;
 	}
 
-	public ProjectRequestMdl(int count){
+	public ProjectMdl(int count){
 		this.appId = "appId_"+count;
 	}
 

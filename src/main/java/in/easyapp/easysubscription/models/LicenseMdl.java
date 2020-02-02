@@ -11,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 
-@Document(collation= "license")
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Document(collection= "license")
 public class LicenseMdl implements Serializable{
 	
 	/**
@@ -21,7 +19,8 @@ public class LicenseMdl implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	private long id;
+	private String id;
+	
 	@Field("appId")
 	private String appId ;
 	@Field("serviceId")
@@ -32,6 +31,8 @@ public class LicenseMdl implements Serializable{
 	private String userId;
 	@Field("licenseKey")
 	private String licenseKey ;
+	@Field("licenseString")
+	private String licenseString;
 	@Field("activationRequired")
 	private boolean  activationRequired ;
 	@Field("created_at")
@@ -43,13 +44,14 @@ public class LicenseMdl implements Serializable{
 	}
 
 	public LicenseMdl(String appId, String serviceId, int validForDays, String userId, String licenseKey,
-			boolean activationRequired) {
+			boolean activationRequired,String licenseString) {
 		this.appId = appId;
 		this.serviceId = serviceId;
 		this.validForDays = validForDays;
 		this.userId = userId;
 		this.licenseKey = licenseKey;
 		this.activationRequired = activationRequired;
+		this.licenseString = licenseString;
 	}
 
 	public String getAppId() {
@@ -101,11 +103,11 @@ public class LicenseMdl implements Serializable{
 	}
 	
 
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -115,6 +117,15 @@ public class LicenseMdl implements Serializable{
 
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
+	}
+	
+
+	public String getLicenseString() {
+		return licenseString;
+	}
+
+	public void setLicenseString(String licenseString) {
+		this.licenseString = licenseString;
 	}
 
 	@Override

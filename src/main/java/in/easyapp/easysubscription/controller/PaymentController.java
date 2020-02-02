@@ -2,6 +2,8 @@ package in.easyapp.easysubscription.controller;
 
 import java.security.Principal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +12,8 @@ import in.easyapp.easysubscription.request.SubscnOrderRequest;
 @CrossOrigin
 @RestController
 public class PaymentController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(PaymentController.class);
+			
     private static boolean ok = true;
     static synchronized void toggleOK(){
         ok = !ok;

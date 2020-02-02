@@ -8,15 +8,15 @@ import java.util.List;
 
 public class ProjectRequest {
 	private String appId;
-	private String appName = "TestApp-Name";
-	private String description ="....";
-	private String createdBy = " ";
-	private  boolean isActive = true;
-	private List<ServiceSubscriptionRequest> services = new ArrayList<>();
+	private String appName;
+	private String description;
+	private String createdBy;
+	private  boolean isActive;
+	private List<ServiceSubscriptionRequest> services;
 	private long createdAt = Date.from(Instant.now()).getTime();
 
-	public ProjectRequest(){
-		this.appId = "appId_1";
+	public ProjectRequest() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public List<ServiceSubscriptionRequest> getServices() {

@@ -2,11 +2,15 @@ package in.easyapp.easysubscription.response;
 
 import in.easyapp.easysubscription.models.LicenseMdl;
 
-public class LicenseResponse {
+public class LicenseResponse implements EasyResponse {
     private String appId;
     private String serviceId;
     private String status;
 
+    public LicenseResponse() {
+		// TODO Auto-generated constructor stub
+	}
+    
     public LicenseResponse(LicenseMdl mdl) {
 		this.appId = mdl.getAppId();
 		this.serviceId = mdl.getServiceId();

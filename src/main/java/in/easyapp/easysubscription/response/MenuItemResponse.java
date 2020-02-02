@@ -3,7 +3,7 @@ package in.easyapp.easysubscription.response;
 import java.util.List;
 
 
-public class MenuItemResponse {
+public class MenuItemResponse implements EasyResponse {
 	 private String menuId;
 	    private String menuName;
 	    private List<MenuItemResponse> subMenus;

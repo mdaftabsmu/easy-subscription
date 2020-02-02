@@ -5,10 +5,10 @@ import java.util.Date;
 
 public class ServiceSubscriptionRequest {
 
-	private String serviceId = "TestService";
-	private String appId = "appId_1";
-	private String subscriptionPlan = "free";
-	private String subscriptionKey = "agfkjuyoi.33178ghkjf.asd";
+	private String serviceId;
+	private String appId;
+	private String subscriptionPlan;
+	private String subscriptionKey;
 	// private String licenseKey =
 	// "iuefifoesfj21epoj.fhaiwf9-28j.fuuihjbb7347yoihfygybki";
 	private long expiresOn = Date.from(Instant.now()).getTime() + 7776000;

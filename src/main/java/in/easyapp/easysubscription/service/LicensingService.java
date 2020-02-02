@@ -9,7 +9,7 @@ import in.easyapp.easysubscription.response.LicenseResponse;
 
 public interface LicensingService extends Licence4jCommonConstants {
 
-	LicenseKeyResponse generateLicense(LicenseRequest license);
+	LicenseKeyResponse generateLicense(LicenseRequest license) throws RequestException;
 
 	List<LicenseResponse> getLicenses(String appId, String serviceId) throws RequestException;
 

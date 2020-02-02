@@ -1,11 +1,11 @@
 package in.easyapp.easysubscription.request;
 
 public class LicenseRequest {
-	private String appId = "appId_1";
-    private String serviceId = "testService_1";
+	private String appId;
+    private String serviceId;
     private int  validForDays = 180;
-    private String userId = "testUserId";
-    private String licenseKey = "iuefifoesfj21epoj.fhaiwf9-28j.fuuihjbb7347yoihfygybki";
+    private String userId;
+    private String licenseKey;
     private boolean  activationRequired  =false;
 
     public String getAppId() {

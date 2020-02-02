@@ -1,6 +1,6 @@
 package in.easyapp.easysubscription.response;
 
-public class SubscriptionPlanResponse {
+public class SubscriptionPlanResponse implements EasyResponse {
 	 private String planName;
 	    private String planDescription;
 	    private int validityInDays;

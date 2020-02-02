@@ -3,7 +3,7 @@ package in.easyapp.easysubscription.response;
 import java.util.List;
 
 
-public class ServiceResponse {
+public class ServiceResponse implements EasyResponse{
 	private String serviceId;
     private String description = "...";
     private String urlMapping = "/xx/..";

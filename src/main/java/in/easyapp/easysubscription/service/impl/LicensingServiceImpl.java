@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.license4j.License;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import in.easyapp.easysubscription.exception.RequestException;
 import in.easyapp.easysubscription.models.LicenseMdl;
@@ -21,12 +23,21 @@ import in.easyapp.easysubscription.util.Licence4jUtil;
 @Service
 public class LicensingServiceImpl implements LicensingService{
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(LicensingServiceImpl.class);
+	
 	@Autowired
 	private LicensingRepository licensingRepository;
 	
+	@Autowired
+	private CommonBean commonBean;
+	
 	
 	@Override
-	public LicenseKeyResponse generateLicense(LicenseRequest req) {
+	public LicenseKeyResponse generateLicense(LicenseRequest req) throws RequestException {
+		if(req == null) {
+			throw new RequestException("Invalid license request");
+		}
+		LOGGER.debug("LicensingServiceImpl - {}", req.getAppId());
 		LicenseMdl mdl = new LicenseMdl();
 		mdl.setActivationRequired(true);
 		mdl.setAppId(req.getAppId());
@@ -36,19 +47,22 @@ public class LicensingServiceImpl implements LicensingService{
 		mdl.setUserId(req.getUserId());
 		mdl.setValidForDays(req.getValidForDays());
 		License validateResponse = null; 
-		if(req.getServiceId()=="service_id_1" && req.getValidForDays()==360) {
-			
-		}else if(req.getServiceId()=="service_id_1" && req.getValidForDays()==180) {
-			
+		if(req.getServiceId()==commonBean.getTwelveServiceId() && req.getValidForDays()==360) {
+			LOGGER.debug("LicensingServiceImpl - {}","Default - 360 days");
+		}else if(req.getServiceId()==commonBean.getSixServiceId() && req.getValidForDays()==180) {
+			LOGGER.debug("LicensingServiceImpl - {}","Default - 180 days");
 		}else {
-			String licenseStringToValidate = Licence4jUtil.generateLicence("1571158624658934459511571158529822");
+			LOGGER.debug("LicensingServiceImpl - {}","Default - 90 days");
+			String licenseStringToValidate = Licence4jUtil.generateLicence(commonBean.getEasyServiceProductId());
 			if(licenseStringToValidate!=null && !licenseStringToValidate.isEmpty()) {
-				validateResponse = Licence4jUtil.validate(PUBLIC_KEY, licenseStringToValidate, mdl.getServiceId());
+				validateResponse = Licence4jUtil.validate(commonBean.getPublicKey(), licenseStringToValidate, mdl.getServiceId());
 			}
-			mdl.setLicenseKey(validateResponse.getLicenseString());
+			LOGGER.debug("LicensingServiceImpl - {}",validateResponse.getActivationStatus());
+			mdl.setLicenseKey(validateResponse.getPublicKey());
+			mdl.setLicenseString(validateResponse.getLicenseString());
 		}
-		licensingRepository.save(mdl);
-		//return new LicenseKeyResponse(validateResponse.getLicenseString(),licenseRequest.getUserId());
+		licensingRepository.insert(mdl);
+		LOGGER.debug("LicensingServiceImpl - {}",mdl.getAppId());
 		return new LicenseKeyResponse(mdl);
 	}
 
@@ -57,7 +71,9 @@ public class LicensingServiceImpl implements LicensingService{
 		if(appId == null || appId.isEmpty()|| serviceId == null || serviceId.isEmpty()) {
 			return convertMdlToResp(licensingRepository.findAll());
 		}
+		LOGGER.debug("LicensingServiceImpl - {}",appId);
 		List<LicenseMdl> list  = licensingRepository.findAllByAppIdAndServiceId(appId,serviceId);
+		LOGGER.debug("LicensingServiceImpl - {}",serviceId);
 		return convertMdlToResp(list);
 	}
 
@@ -65,6 +81,7 @@ public class LicensingServiceImpl implements LicensingService{
 		if(list ==null || list.isEmpty()) {
 			throw new RequestException("License Not found in db");
 		}
+		LOGGER.debug("LicensingServiceImpl -license size {}",list.size());
 		List<LicenseResponse> resp  = new ArrayList<LicenseResponse>();
 		for(LicenseMdl mdl : list) {
 			resp.add(new LicenseResponse(mdl));
@@ -77,8 +94,22 @@ public class LicensingServiceImpl implements LicensingService{
 		if(appId == null || serviceId == null) {
 			throw new RequestException("Invalid AppId and ServiceId");
 		}
-		
-		return null;
+		LOGGER.debug("LicensingServiceImpl Service id - {}",serviceId);
+		LicenseMdl mdl = licensingRepository.findByAppIdAndServiceId(appId, serviceId);
+		if(mdl == null) {
+			throw new RequestException("License not found in db");
+		}
+		LOGGER.debug("LicensingServiceImpl ID - {}",mdl.getId());
+		License license = Licence4jUtil.autoValidate(commonBean.getPublicKey(), mdl.getLicenseString(), serviceId);
+		LicenseResponse res =  new LicenseResponse();
+		res.setAppId(appId);
+		res.setServiceId(serviceId);
+		if(license.isActivationCompleted()) {
+			  res.setStatus(ACTIVATED);
+		}else {
+			res.setStatus(IN_ACTIVATED);
+		}
+		return res;
 	}
 
 	@Override
@@ -86,13 +117,14 @@ public class LicensingServiceImpl implements LicensingService{
 		if(appId == null || serviceId == null) {
 			throw new RequestException("Invalid AppId and ServiceId");
 		}
+		LOGGER.debug("LicensingServiceImpl Service id - {}",serviceId);
 		LicenseMdl mdl = licensingRepository.findByAppIdAndServiceId(appId, serviceId);
 		if(mdl == null) {
 			throw new RequestException("License not found in db");
 		}
-		License validate = Licence4jUtil.validate(PUBLIC_KEY, String.valueOf(mdl.getValidForDays()), mdl.getServiceId());
+		License validate = Licence4jUtil.validate(commonBean.getPublicKey(), mdl.getLicenseString(), mdl.getServiceId());
 		
-		if(validate!= null && validate.getActivationStatus().equals(VALID)) {
+		if(validate!= null && validate.getValidationStatus().equals(VALID)) {
 			return new LicenseResponse(appId,serviceId,VALID);
 		}
 		

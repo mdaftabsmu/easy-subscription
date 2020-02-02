@@ -2,7 +2,7 @@ package in.easyapp.easysubscription.response;
 
 import in.easyapp.easysubscription.models.LicenseMdl;
 
-public class LicenseKeyResponse {
+public class LicenseKeyResponse implements EasyResponse {
 	private String licenseKey;
     private String userId;
 

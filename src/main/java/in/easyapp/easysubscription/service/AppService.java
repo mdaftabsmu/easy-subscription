@@ -24,7 +24,7 @@ public interface AppService extends Licence4jCommonConstants{
 
 	List<ServiceSubscriptionResponse> getServiceForAppId(String appId) throws RequestException, DataNotFoundException;
 
-	LicenseResponse updateServiceLicense(String appId, String serviceId, ServiceSubscriptionRequest subcn);
+	LicenseResponse updateServiceLicense(String appId, String serviceId, ServiceSubscriptionRequest subcn) throws RequestException;
 
 
 }

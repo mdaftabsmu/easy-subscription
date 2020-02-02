@@ -6,9 +6,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import in.easyapp.easysubscription.models.ProjectRequestMdl;
+import in.easyapp.easysubscription.models.ProjectMdl;
+import in.easyapp.easysubscription.models.ServiceSubscriptionMdl;
 
-public class ProjectResponse {
+public class ProjectResponse implements EasyResponse {
 	private String appId;
 	private String appName;
 	private String description;
@@ -33,12 +34,16 @@ public class ProjectResponse {
 		this.appId = "appId_"+count;
 	}
 
-	public ProjectResponse(ProjectRequestMdl mdl) {
+	public ProjectResponse(ProjectMdl mdl) {
 		this.appId = mdl.getAppId();
 		this.appName = mdl.getAppName();
 		this.description= mdl.getDescription();
 		this.createdBy = mdl.getCreatedBy();
 		this.isActive = mdl.getActive();
+		this.services = new ArrayList<ServiceSubscriptionResponse>();
+		for(ServiceSubscriptionMdl serviceMdl : mdl.getServices()) {
+			services.add(new ServiceSubscriptionResponse(serviceMdl));
+		}
 	}
 
 	public String getAppId() {
