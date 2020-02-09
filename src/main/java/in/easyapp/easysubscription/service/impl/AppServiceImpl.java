@@ -98,12 +98,11 @@ public class AppServiceImpl implements AppService {
 			throw new RequestException("Invalid request");
 		}
 		
-		License validate = Licence4jUtil.validate(commonBean.getPublicKey(), subcn.getSubscriptionPlan(), subcn.getServiceId());
-		
-		if(validate == null || validate.getValidationStatus().equals(IN_VALID)) {
-			throw new LicenceException("Invalid License details");
+		String licence = Licence4jUtil.generateLicence(commonBean.getEasyServiceProductId());
+		if(licence == null || licence.isEmpty() ) {
+			throw new LicenceException("Unable to create License");
 		}
-		ServiceSubscriptionMdl mdl = serviceSubRepository.save(new ServiceSubscriptionMdl(subcn,validate.getLicenseKey().getTheKey()));
+		ServiceSubscriptionMdl mdl = serviceSubRepository.save(new ServiceSubscriptionMdl(subcn,licence));
 		return new ServiceSubscriptionResponse(mdl);
 	}
 
@@ -136,9 +135,17 @@ public class AppServiceImpl implements AppService {
 		for(ServiceSubscriptionMdl service : appMdl.getServices()){
 			if(service.getServiceId().equals(serviceId)) {
 				if(service.getExpiresOn()<new Date().getTime() && !service.getIsActive()) {
-					serviceSubRepository.save(new ServiceSubscriptionMdl(subcn));
+					String licence = Licence4jUtil.generateLicence(commonBean.getEasyServiceProductId());
+					if(licence == null || licence.isEmpty() ) {
+						throw new RequestException("Unable to create License");
+					}
+					serviceSubRepository.save(new ServiceSubscriptionMdl(subcn,licence));
 				}else {
-					serviceSubRepository.save(new ServiceSubscriptionMdl(subcn,service.getExpiresOn()));
+					String licence = Licence4jUtil.generateLicence(commonBean.getEasyServiceProductId());
+					if(licence == null || licence.isEmpty() ) {
+						throw new RequestException("Unable to create License");
+					}
+					serviceSubRepository.save(new ServiceSubscriptionMdl(subcn,service.getExpiresOn(),licence));
 				}
 				flag = true;
 				break;

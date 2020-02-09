@@ -57,7 +57,7 @@ public class ServiceSubscriptionMdl {
 		this.isActive = true;
 	}
 	
-	public ServiceSubscriptionMdl(ServiceSubscriptionRequest req,long expiresOn) {
+	public ServiceSubscriptionMdl(ServiceSubscriptionRequest req,long expiresOn,String licenseKey) {
 		this.serviceId = req.getServiceId();
 		this.appId = req.getAppId();
 		this.subscriptionPlan = req.getSubscriptionPlan();
@@ -65,6 +65,7 @@ public class ServiceSubscriptionMdl {
 		this.expiresOn = req.getExpiresOn();
 		this.createdAt = expiresOn;
 		this.isActive = true;
+		this.licenseKey = licenseKey;
 	}
 
 	public String getId() {
