@@ -1,6 +1,10 @@
 package in.easyapp.easysubscription.response;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import in.easyapp.easysubscription.models.ServiceMdl;
+import in.easyapp.easysubscription.models.SubscriptionPlanMdl;
 
 
 public class ServiceResponse implements EasyResponse{
@@ -18,7 +22,19 @@ public class ServiceResponse implements EasyResponse{
         this.serviceId = serviceId;
     }
 
-    public String getServiceId() {
+    public ServiceResponse(ServiceMdl mdl) {
+    	serviceId = mdl.getServiceId();
+    	description = mdl.getDescription();
+    	urlMapping = mdl.getUrlMapping();
+    	licensedMethods = mdl.getLicensedMethods();
+    	List<SubscriptionPlanResponse> planRes = new ArrayList<SubscriptionPlanResponse>();
+    	 for(SubscriptionPlanMdl plan : mdl.getPlans()) {
+    		 planRes.add(new SubscriptionPlanResponse(plan));
+    	 }
+    	 plans = planRes;
+	}
+
+	public String getServiceId() {
         return serviceId;
     }
 

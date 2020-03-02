@@ -13,7 +13,11 @@ import org.slf4j.LoggerFactory;
 
 import in.easyapp.easysubscription.exception.RequestException;
 import in.easyapp.easysubscription.models.LicenseMdl;
+import in.easyapp.easysubscription.models.ProjectMdl;
+import in.easyapp.easysubscription.models.ServiceMdl;
+import in.easyapp.easysubscription.repository.AppRepository;
 import in.easyapp.easysubscription.repository.LicensingRepository;
+import in.easyapp.easysubscription.repository.ServiceRepository;
 import in.easyapp.easysubscription.request.LicenseRequest;
 import in.easyapp.easysubscription.response.LicenseKeyResponse;
 import in.easyapp.easysubscription.response.LicenseResponse;
@@ -31,6 +35,12 @@ public class LicensingServiceImpl implements LicensingService{
 	@Autowired
 	private CommonBean commonBean;
 	
+	@Autowired
+	private AppRepository appRepository;
+	
+	@Autowired
+	private ServiceRepository serviceRepository;
+	
 	
 	@Override
 	public LicenseKeyResponse generateLicense(LicenseRequest req) throws RequestException {
@@ -38,6 +48,17 @@ public class LicensingServiceImpl implements LicensingService{
 			throw new RequestException("Invalid license request");
 		}
 		LOGGER.debug("LicensingServiceImpl - {}", req.getAppId());
+		if(req.getAppId() ==null || req.getAppId().isEmpty()) {
+			throw new RequestException("Invalid App Id");
+		}
+		ProjectMdl byAppId = appRepository.findByAppId(req.getAppId());
+		if(req.getServiceId()==null || req.getServiceId().isEmpty()) {
+			throw new RequestException("Invalid service Id");
+		}
+		ServiceMdl serviceMdl = serviceRepository.findByServiceId(req.getServiceId());
+		if(byAppId ==null || serviceMdl == null) {
+			throw new RequestException("Invalid App /Service Id");
+		}
 		LicenseMdl mdl = new LicenseMdl();
 		mdl.setActivationRequired(true);
 		mdl.setAppId(req.getAppId());

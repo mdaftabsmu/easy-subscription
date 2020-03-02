@@ -1,12 +1,21 @@
 package in.easyapp.easysubscription.response;
 
+import in.easyapp.easysubscription.models.SubscriptionPlanMdl;
+
 public class SubscriptionPlanResponse implements EasyResponse {
 	 private String planName;
 	    private String planDescription;
 	    private int validityInDays;
 	    private float  price;
 
-	    public String getPlanName() {
+	    public SubscriptionPlanResponse(SubscriptionPlanMdl plan) {
+	    	planName = plan.getPlanName();
+	    	planDescription = plan.getPlanDescription();
+	    	validityInDays = plan.getValidityInDays();
+	    	price =plan.getPrice();
+		}
+
+		public String getPlanName() {
 	        return planName;
 	    }
 
