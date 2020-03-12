@@ -43,8 +43,8 @@ public class ServiceController {
 	}
 			
     @RequestMapping(value = "/services", method = RequestMethod.GET)
-    public List<ServiceResponse> getServices(Principal principal,@RequestParam(value = "appId", required = false) String appId) {
-    	List<ServiceResponse> list  = serviceAppService.getServices(appId);
+    public List<ServiceResponse> getServices(Principal principal) {
+    	List<ServiceResponse> list  = serviceAppService.getServices();
     	return list;
 
     }

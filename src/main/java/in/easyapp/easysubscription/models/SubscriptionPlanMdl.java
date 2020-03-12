@@ -5,7 +5,7 @@ import java.util.Date;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-@Document(collection= "subscriptionPlanMdl")
+@Document(collection= "easy_subscription_plan")
 public class SubscriptionPlanMdl {
 	@Id
 	private String id;

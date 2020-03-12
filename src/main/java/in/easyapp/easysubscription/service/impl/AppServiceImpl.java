@@ -26,13 +26,13 @@ import in.easyapp.easysubscription.util.Licence4jUtil;
 
 @Service
 public class AppServiceImpl implements AppService {
-	
+
 	@Autowired
 	private AppRepository appRepository;
-	
+
 	@Autowired
 	private ServiceSubRepository serviceSubRepository;
-	
+
 	@Autowired
 	private CommonBean commonBean;
 
@@ -42,8 +42,10 @@ public class AppServiceImpl implements AppService {
 			throw new RequestException("Invalid app request");
 		}
 		List<ServiceSubscriptionMdl> services  = new ArrayList<ServiceSubscriptionMdl>();
-		for(ServiceSubscriptionRequest req : app.getServices()) {
-			services.add(new ServiceSubscriptionMdl(req));
+		if(app.getServices()!=null) {
+			for(ServiceSubscriptionRequest req : app.getServices()) {
+				services.add(new ServiceSubscriptionMdl(req));
+			}
 		}
 		ProjectMdl mdl = appRepository.insert(new ProjectMdl(app,services));
 		return new ProjectResponse(mdl);
@@ -52,17 +54,17 @@ public class AppServiceImpl implements AppService {
 	@Override
 	public List<ProjectResponse> getApps(String createdBy) throws RequestException {
 		try {
-		if(createdBy == null || createdBy.isEmpty()) {
-			List<ProjectMdl> list = appRepository.findAll();
-			return convertMdlToResp(list);
-		}
-		List<ProjectMdl> list = appRepository.findAllByCreatedBy(createdBy);
-		return  convertMdlToResp(list);
+			if(createdBy == null || createdBy.isEmpty()) {
+				List<ProjectMdl> list = appRepository.findAll();
+				return convertMdlToResp(list);
+			}
+			List<ProjectMdl> list = appRepository.findAllByCreatedBy(createdBy);
+			return  convertMdlToResp(list);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		throw new RequestException();
-		
+
 	}
 
 	private List<ProjectResponse> convertMdlToResp(List<ProjectMdl> list) throws RequestException {
@@ -87,17 +89,17 @@ public class AppServiceImpl implements AppService {
 		}
 		return new ProjectResponse(mdl);
 	}
-	
+
 	// TO DO  -  appid and serviceId do required 
-	
-	
+
+
 	@Override
 	public ServiceSubscriptionResponse subscribeServiceForAppId(String appId, String serviceId,
 			ServiceSubscriptionRequest subcn) throws RequestException, LicenceException {
 		if(appId == null || appId.isEmpty()||serviceId == null || serviceId.isEmpty()|| subcn ==null) {
 			throw new RequestException("Invalid request");
 		}
-		
+
 		String licence = Licence4jUtil.generateLicence(commonBean.getEasyServiceProductId());
 		if(licence == null || licence.isEmpty() ) {
 			throw new LicenceException("Unable to create License");

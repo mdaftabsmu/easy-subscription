@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import in.easyapp.easysubscription.request.ServiceSubscriptionRequest;
 
-@Document(collection= "ServiceSubscriptionMdl")
+@Document(collection= "easy_service_subscription")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceSubscriptionMdl {

@@ -33,6 +33,7 @@ public class ServiceAppServiceImpl implements ServiceAppService {
 		}
 		LOGGER.debug("Request data : "+serviceRequest.getServiceId());
 		ServiceMdl model  = new ServiceMdl();
+		model.setServiceId(serviceRequest.getServiceId());
 		model.setCreateAt(new Date());
 		model.setIsActive(true);
 		model.setDescription(serviceRequest.getDescription());
@@ -49,11 +50,7 @@ public class ServiceAppServiceImpl implements ServiceAppService {
 	}
 
 	@Override
-	public List<ServiceResponse> getServices(String appId) {
-		// Need to discuss
-		/*if(appId != null && !appId.isEmpty()) {
-			serviceRepository.findByAppId(appId);
-		}*/
+	public List<ServiceResponse> getServices() {
 		List<ServiceResponse> resps = new ArrayList<ServiceResponse>();
 		List<ServiceMdl> lists = serviceRepository.findAll();
 		for(ServiceMdl mdl : lists) {

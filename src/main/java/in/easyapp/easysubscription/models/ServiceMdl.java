@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import in.easyapp.easysubscription.request.SubscriptionPlanRequest;
 
-@Document(collection= "serviceMdl")
+@Document(collection= "easy_service")
 public class ServiceMdl {
 	@Id
 	private String id;

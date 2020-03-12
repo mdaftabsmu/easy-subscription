@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import in.easyapp.easysubscription.request.ProjectRequest;
 
-@Document(collection= "projectMdl")
+@Document(collection= "easy_project")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProjectMdl {

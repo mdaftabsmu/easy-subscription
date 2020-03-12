@@ -11,5 +11,5 @@ public interface ServiceRepository extends MongoRepository<ServiceMdl, String>{
 	ServiceMdl findByServiceId(String serviceId);
 
 	// Need to discuss
-	void findByAppId(String appId);
+	//void findByAppId(String appId);
 }

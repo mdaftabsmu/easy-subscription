@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 
-@Document(collection= "license")
+@Document(collection= "easy_license")
 public class LicenseMdl implements Serializable{
 	
 	/**

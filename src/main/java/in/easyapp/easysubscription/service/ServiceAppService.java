@@ -10,7 +10,7 @@ public interface ServiceAppService {
 
 	ServiceResponse create(ServiceRequest serviceRequest) throws RequestException;
 
-	List<ServiceResponse> getServices(String appId);
+	List<ServiceResponse> getServices();
 
 	ServiceResponse getService(String serviceId) throws RequestException;
 
